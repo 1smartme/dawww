@@ -1,0 +1,1 @@
+This folder is useful for your WAD pracss.
