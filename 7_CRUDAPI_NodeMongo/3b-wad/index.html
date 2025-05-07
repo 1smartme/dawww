@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Registration</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">User Registration Form</h2>
+
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-6 px-3">
+        <!-- Registration Form -->
+        <form id="registrationForm">
+          <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" class="form-control" id="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone:</label>
+            <input type="text" class="form-control" id="phone" required>
+          </div>
+          <div class="form-group">
+            <label for="course">Course:</label>
+            <select class="form-control" id="course" required>
+              <option value="B.Tech">B.Tech</option>
+              <option value="B.Sc">B.Sc</option>
+              <option value="B.Com">B.Com</option>
+              <option value="MCA">MCA</option>
+              <option value="MBA">MBA</option>
+            </select> 
+          </div>
+          <div class="form-group">
+            <label for="year">Year:</label>
+            <select class="form-control" id="year" required>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="Final Year">Final Year</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- Display all users -->
+    <h3 class="text-center mt-5">All Registered Users</h3>
+    <div id="userList" class="px-3"></div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    let editingUserId = null; // To store the ID of the user being edited
+
+    // POST or PUT user
+    $('#registrationForm').on('submit', function(event) {
+      event.preventDefault();
+
+      const userData = {
+        name: $('#name').val(),
+        email: $('#email').val(),
+        phone: $('#phone').val(),
+        course: $('#course').val(),
+        year: $('#year').val()
+      };
+
+      const url = editingUserId
+        ? `http://localhost:5000/api/users/${editingUserId}`
+        : 'http://localhost:5000/api/users';
+
+      const method = editingUserId ? 'PUT' : 'POST';
+
+      $.ajax({
+        url: url,
+        type: method,
+        contentType: 'application/json',
+        data: JSON.stringify(userData),
+        success: function(response) {
+          alert(editingUserId ? 'User updated successfully!' : 'User created successfully!');
+          resetForm();
+          fetchUsers();
+        },
+        error: function(error) {
+          alert('Error saving user');
+        }
+      });
+    });
+
+    // Fetch users
+    function fetchUsers() {
+      $.ajax({
+        url: 'http://localhost:5000/api/users',
+        type: 'GET',
+        success: function(response) {
+          const users = response.map(user => `
+            <div class="user-card card mt-3">
+              <div class="card-body">
+                <h5 class="card-title">${user.name}</h5>
+                <p class="card-text">${user.email} | ${user.phone} | ${user.course} | ${user.year}</p>
+                <button class="btn btn-info" onclick="editUser('${user._id}')">Edit</button>
+                <button class="btn btn-warning" onclick="viewUser('${user._id}')">View</button>
+                <button class="btn btn-danger" onclick="deleteUser('${user._id}')">Delete</button>
+              </div>
+            </div>
+          `);
+          $('#userList').html(users.join(''));
+        },
+        error: function(error) {
+          alert('Error fetching users');
+        }
+      });
+    }
+
+    // Delete user
+    function deleteUser(userId) {
+      $.ajax({
+        url: `http://localhost:5000/api/users/${userId}`,
+        type: 'DELETE',
+        success: function(response) {
+          alert('User deleted successfully!');
+          fetchUsers();
+        },
+        error: function(error) {
+          alert('Error deleting user');
+        }
+      });
+    }
+
+    // Edit user
+    function editUser(userId) {
+      $.ajax({
+        url: `http://localhost:5000/api/users/${userId}`,
+        type: 'GET',
+        success: function(user) {
+          $('#name').val(user.name);
+          $('#email').val(user.email);
+          $('#phone').val(user.phone);
+          $('#course').val(user.course);
+          $('#year').val(user.year);
+          editingUserId = user._id;
+        },
+        error: function(error) {
+          alert('Error fetching user for edit');
+        }
+      });
+    }
+
+    // View user
+    function viewUser(userId) {
+      $.ajax({
+        url: `http://localhost:5000/api/users/${userId}`,
+        type: 'GET',
+        success: function(user) {
+          alert(
+            `Name: ${user.name}\n` +
+            `Email: ${user.email}\n` +
+            `Phone: ${user.phone}\n` +
+            `Course: ${user.course}\n` +
+            `Year: ${user.year}`
+          );
+        },
+        error: function(error) {
+          alert('Error fetching user details');
+        }
+      });
+    }
+
+    // Reset form
+    function resetForm() {
+      $('#registrationForm')[0].reset();
+      editingUserId = null;
+    }
+
+    // On page load
+    $(document).ready(function() {
+      fetchUsers();
+    });
+  </script>
+</body>
+</html>

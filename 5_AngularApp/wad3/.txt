@@ -1,0 +1,19 @@
+npm install -g @angular/cli@latest
+ng new app
+ open: app.component.html
+    : app.component.ts
+ng serve
+
+to diploy:
+
+ https://cloud.google.com/sdk/docs/install
+
+ gcloud init
+ gcloud app create
+ ng build --configuration production
+
+Create app.yml file
+
+ gcloud app deploy
+ app browse
+

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 350px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #555;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Register User</h2>
+    <form id="registrationForm">
+      <label>Name:
+        <input type="text" id="name" required />
+      </label>
+      <label>Email:
+        <input type="email" id="email" required />
+      </label>
+      <label>Password:
+        <input type="password" id="password" required />
+      </label>
+      <label>Phone:
+        <input type="tel" id="phone" />
+      </label>
+      <label>Age:
+        <input type="number" id="age" min="0" />
+      </label>
+      <label>Gender:
+        <select id="gender">
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </label>
+      <button type="submit">Register</button>
+    </form>
+  </div>
+  <script src="register.js"></script>
+</body>
+</html>
