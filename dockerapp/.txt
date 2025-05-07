@@ -1,0 +1,4 @@
+docker -v
+node new.js
+docker build -t foldername
+docker images
