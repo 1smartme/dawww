@@ -1,6 +1,7 @@
 2]]--AJAX--
 server.js or node.js
 
+------------------------------------------------------------------
 3--Git--
 
 git init
@@ -9,19 +10,55 @@ git commit -m "Initial Commit"
 git remote add origin https://
 git push -u origin master
 
+------------------------------------------------------------------
 4]]--docker--
 
-sudo amazon-linux-extras install docker -y
-sudo service docker start
-sudo usermod -a -G docker ec2-user
+sudo apt update
+sudo apt install docker.io -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
+
 docker --version
+docker run hello-world
 docker pull nginx
 docker run -d -p 8080:80 nginx
-docker ps
+docker ps          # list running containers
+docker stop <id>   # stop container
+docker rm <id>     # remove container
+
+FROM nginx:alpine
+COPY index.html /usr/share/nginx/html/
+docker build -t my-static-app .
+docker run -d -p 8081:80 my-static-app
+--
+
+docker images
+docker run -it openjdk:17 jshell
+jshell> System.out.println("Hello");
+jshell> int a=10; 
+jshell> int b=20; 
+jshell> System.out.println(a+b);
+int c=a+d;  
+
+//2nd terminal
+docker images
+docker ps -a
+docker stop your_container_id
+docker ps -a
+
+------------------------------------------------------------------
+docker --version
+docker info
+docker pull nginx
+docker run -d -p 8080:80 nginx
+http://localhost:8080
 docker stop <container_id>
 docker rm <container_id>
+docker images
+docker rmi nginx
 
-
+------------------------------------------------------------------
 5]]--angular--
 
 npm install -g @angular/cli@latest
@@ -29,6 +66,8 @@ ng new app
  -app.component.html
  -app.component.ts
 ng serve
+
+------------------------------------------------------------------
 
 6]]--static-web--
 
@@ -38,6 +77,8 @@ npm init -y
 npm install express
 
 copy code: server.js and index.html
+
+------------------------------------------------------------------
 
 7]]--Crud--
 
