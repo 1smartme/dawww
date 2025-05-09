@@ -1,0 +1,16 @@
+--Static Web--
+ssh -i "your-key.pem" ubuntu@<your-public-ip>
+
+sudo yum update -y
+sudo yum install httpd -y
+sudo systemctl start httpd
+sudo systemctl enable httpd
+
+--Apache server--
+ssh -i "your-key.pem" ubuntu@your-ec2-public-ip
+
+chmod 400 your-key.pem
+sudo apt update
+sudo apt install apache2 -y
+sudo systemctl start apache2
+sudo systemctl enable apache2
